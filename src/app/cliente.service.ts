@@ -17,7 +17,14 @@ export class ClienteService {
 
   pesquisarClientes(nome: string):Client[]
   {
-      return this.obterStorage();
+    const clientes = this.obterStorage();
+
+    if(!nome){
+      return clientes;
+    }
+
+    return clientes.filter(cliente => cliente.nome?.indexOf(nome)!== -1)
+
   }
 
   private obterStorage() : Client[]{
