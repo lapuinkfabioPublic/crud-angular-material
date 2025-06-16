@@ -46,10 +46,8 @@ export class CadastroComponent implements OnInit {
             this.cliente = clienteEncontrado;
           }
         }
-    }
-
-    )    
-
+      }
+    )  
   }
 
     salvar(){
