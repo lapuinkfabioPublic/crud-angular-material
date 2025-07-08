@@ -73,6 +73,20 @@
                             </mat-form-field>
                         </div>
                     </div>
+
+                      <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="16px">
+                        <div fxLayout="column" fxFlex="400px">
+                            <mat-form-field class="full-width">
+                                <mat-label>Município: *</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let m of municipios" [value]="m.codigo_ibge">
+                                        {{m.nome}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
                 </mat-card-content>
                 <mat-card-actions>
                         @if(!atualizando){
