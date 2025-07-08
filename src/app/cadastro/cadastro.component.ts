@@ -10,7 +10,13 @@ import { MatSnackBar} from '@angular/material/snack-bar'
 import { Client } from './cliente';
 import { ClienteService } from '../cliente.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxMaskDirective, provideNgxMask} from 'ngx-mask'
+import { NgxMaskDirective, provideNgxMask} from 'ngx-mask';
+import { BrasilapiService } from '../brasilapi.service';
+import { Municipio } from '../brasilapi.models';
+import { Estado } from '../brasilapi.models';
+import { MatSelectModule } from '@angular/material/select'
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-cadastro',
@@ -18,6 +24,8 @@ import { NgxMaskDirective, provideNgxMask} from 'ngx-mask'
             MatInputModule,
             MatCardModule, 
             MatFormFieldModule, 
+            CommonModule,
+            MatSelectModule,
             MatIconModule,
             MatButtonModule,
             FormsModule,
@@ -31,8 +39,11 @@ export class CadastroComponent implements OnInit {
     cliente: Client = Client.newClient();
     atualizando: boolean = false;
     snack: MatSnackBar = inject(MatSnackBar);
+    estados: Estado[] = []; 
+    municipios:  Municipio[] = [];
 
     constructor(private service: ClienteService,
+      private brasilApiService: BrasilapiService,
       private route: ActivatedRoute,
       private router: Router
 
@@ -40,6 +51,22 @@ export class CadastroComponent implements OnInit {
 
     }
 
+  carregarUFs(){
+    this.estados  = []
+    
+    //observable subcriber
+    this.brasilApiService.listarUfs().subscribe({
+      next: (ufs) => {
+        console.log("lista estados", ufs),
+        this.estados = ufs;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+
+    });
+
+  }
   ngOnInit(): void {
     this.route.queryParamMap.subscribe( (query : any) => {
         const params = query['params'];
@@ -54,6 +81,7 @@ export class CadastroComponent implements OnInit {
         }
       }
     )  
+    this.carregarUFs();
   }
 
     salvar(){
