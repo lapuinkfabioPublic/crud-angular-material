@@ -14,7 +14,7 @@ import { NgxMaskDirective, provideNgxMask} from 'ngx-mask';
 import { BrasilapiService } from '../brasilapi.service';
 import { Municipio } from '../brasilapi.models';
 import { Estado } from '../brasilapi.models';
-import { MatSelectModule } from '@angular/material/select'
+import { MatSelectChange, MatSelectModule } from '@angular/material/select'
 import { CommonModule } from '@angular/common';
 
 
@@ -67,6 +67,21 @@ export class CadastroComponent implements OnInit {
     });
 
   }
+
+  carregarMunicipios(event: MatSelectChange){
+    const ufSelectionada = event.value;
+    this.brasilApiService.listarMunicipios(ufSelectionada).subscribe({
+      next: (listarMunicipios) =>  this.municipios = listarMunicipios,
+      error: (error) => {
+        console.log('Ocorreu um erro: ' + error);
+      }
+    }
+
+    );
+
+  }
+
+
   ngOnInit(): void {
     this.route.queryParamMap.subscribe( (query : any) => {
         const params = query['params'];
